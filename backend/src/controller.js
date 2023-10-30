@@ -1,16 +1,13 @@
 const pool = require('../db');
 const queries = require('./queries');
-module.exports = {};
 
 
 //gets all articles
-const getArticles = async(req, res) => {
-    try {
-        const allArticles = await pool.query("SELECT * FROM articles");
-        res.json(allArticles.rows);
-    } catch (err) {
-        console.error(err.message);
-    }
+const getArticles = (req, res) => {
+    pool.query(queries.getArticles, (error, results) => {
+        if(error) throw error;
+        res.status(200).json(results.rows);
+    })
     
 };
 
@@ -29,20 +26,29 @@ const getArticleById = async(req, res) => {
 
 
 //add article to database
-const addArticle = async(req, res) => {
-    try {
+const addArticle = (req, res) => {
+ /*()   try {
         const { articleName, articleContent, author, date} = req.body;
         const newArticle = await pool.query
-        ("INSERT INTO articles (articleName, articleContent, author, date) values ($1, $2, $3, $4)");
+        ("INSERT INTO articles (articleName, articleContent, author, date) VALUES ($1, $2, $3, $4)", 
+        [ articleName, articleContent, author, date]);
         res.json(newArticle.rows[0]);
     } catch (err) {
         console.error(err.message);
-    }
+    } */
+
+const { articlename, author, date } = req.body;
+        pool.query(queries.addArticle, [articlename, author, date], (error,results) =>
+        {
+            if(error) throw error;
+            res.status(200).send("Article added");
+        })
+    
 };
 
 
 //remove article from database
-const removeArticle = (req, res) => {
+const removeArticle = async(req, res) => {
     try {
         
     } catch (err) {
@@ -50,9 +56,10 @@ const removeArticle = (req, res) => {
     }
 };
 
-const updateArticle = (req, res) => {
+const updateArticle = async(req, res) => {
 try {
-    
+    const { articleContent } = req.body;
+    const update = await pool.query()
 } catch (err) {
     console.error(err.message);
 }
