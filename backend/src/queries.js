@@ -1,1 +1,5 @@
-// const getArticles = "SELECT * FROM articles";
+ //const getArticles = "SELECT * FROM articles";
+
+ //module.exports = {
+ //   getArticles,
+ //}
